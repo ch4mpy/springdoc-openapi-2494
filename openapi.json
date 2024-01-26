@@ -1,72 +1,57 @@
 {
-	"openapi": "3.0.1",
-	"info": {
-		"title": "OpenAPI definition",
-		"version": "v0"
-	},
-	"servers": [
-		{
-			"url": "http://localhost:8080",
-			"description": "Generated server url"
-		}
-	],
-	"paths": {
-		"/demo": {
-			"get": {
-				"tags": [
-					"demo-controller"
-				],
-				"operationId": "getDemo",
-				"parameters": [
-					{
-						"name": "dto",
-						"in": "query",
-						"required": true,
-						"schema": {
-							"$ref": "#/components/schemas/Dto"
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"*/*": {
-								"schema": {
-									"$ref": "#/components/schemas/Dto"
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	},
-	"components": {
-		"schemas": {
-			"Dto": {
-				"required": [
-					"name",
-					"str"
-				],
-				"type": "object",
-				"properties": {
-					"name": {
-						"type": "string",
-						"enum": [
-							"machin",
-							"truc"
-						]
-					},
-					"str": {
-						"type": "string",
-						"enum": [
-							"bidule",
-							"chose"
-						]
-					}
-				}
-			}
-		}
-	}
+  "openapi": "3.0.1",
+  "info": { "title": "OpenAPI definition", "version": "v0" },
+  "servers": [
+    { "url": "https://localhost:8080", "description": "Generated server url" }
+  ],
+  "paths": {
+    "/demo": {
+      "get": {
+        "tags": ["demo-controller"],
+        "operationId": "getDemo",
+        "parameters": [
+          {
+            "name": "dto",
+            "in": "query",
+            "required": true,
+            "schema": { "$ref": "#/components/schemas/Dto" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": { "schema": { "$ref": "#/components/schemas/Dto" } }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["demo-controller"],
+        "operationId": "putDemo",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Dto" }
+            }
+          },
+          "required": true
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Dto": {
+        "required": ["bij", "name", "str"],
+        "type": "object",
+        "properties": {
+          "name": { "type": "string", "enum": ["name a", "name b"] },
+          "str": { "type": "string", "enum": ["str a", "str b"] },
+          "bij": { "type": "string", "enum": ["bij a", "bij b"] }
+        }
+      }
+    }
+  }
 }
