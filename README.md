@@ -96,5 +96,5 @@ the generated spec is:
 
 This is:
 - wrong for `EnumSerializedByName` wich is always serialized using `name()` and deserialised using `valueOf()`
-- right for ``
+- right for `BijectiveEnumSerializedByToString`
 - right for `EnumSerializedByToString` when `HttpMessageConverter` beans are used (`@RequestBody` and `@ResponseBody`), but wrong when the default `Converter<String, EnumSerializedByToString>` is used (`@RequestParam`)
