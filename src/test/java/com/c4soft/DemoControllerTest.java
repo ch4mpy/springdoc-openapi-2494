@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.c4soft.DemoController.EnumSerializedByName;
+import com.c4soft.DemoController.EnumSerializedByToString;
 
 @WebMvcTest(controllers = DemoController.class)
 class DemoControllerTest {
@@ -19,9 +20,23 @@ class DemoControllerTest {
     MockMvc mockMvc;
 
     @Test
-    void whenGetDemo_thenStatusIsSerializedByName() throws Exception {
-        mockMvc.perform(get("/demo").param("status", EnumSerializedByName.ON.name())).andExpect(status().isOk()).andExpect(jsonPath("status", is(EnumSerializedByName.ON.name())));
-        mockMvc.perform(get("/demo").param("status", EnumSerializedByName.ON.toString())).andExpect(status().is4xxClientError());
+    void whenUsingNameUnlessToStringIsDecoratedWithJsonValue_thenOk() throws Exception {
+        mockMvc.perform(get("/demo").param("name", EnumSerializedByName.A.name()).param("str", EnumSerializedByToString.A.toString()))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("name", is(EnumSerializedByName.A.name())))
+          .andExpect(jsonPath("str", is(EnumSerializedByToString.A.toString())));
+    }
+
+    @Test
+    void whenUsingToStringOutputOnEnumWithToStringWithoutJsonValue_thenKo() throws Exception {
+        mockMvc.perform(get("/demo").param("name", EnumSerializedByName.A.toString()).param("str", EnumSerializedByToString.A.name()))
+          .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    void whenUsingNameOnEnumWithToStringWithJsonValue_thenKo() throws Exception {
+        mockMvc.perform(get("/demo").param("name", EnumSerializedByName.A.name()).param("str", EnumSerializedByToString.A.name()))
+          .andExpect(status().is4xxClientError());
     }
 
 }

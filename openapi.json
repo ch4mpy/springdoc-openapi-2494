@@ -1,41 +1,72 @@
 {
-  "openapi": "3.0.1",
-  "info": { "title": "OpenAPI definition", "version": "v0" },
-  "servers": [
-    { "url": "http://localhost:8080", "description": "Generated server url" }
-  ],
-  "paths": {
-    "/demo": {
-      "get": {
-        "tags": ["demo-controller"],
-        "operationId": "getDemo",
-        "parameters": [
-          {
-            "name": "dto",
-            "in": "query",
-            "required": true,
-            "schema": { "$ref": "#/components/schemas/Dto" }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": { "schema": { "$ref": "#/components/schemas/Dto" } }
-            }
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "Dto": {
-        "type": "object",
-        "properties": {
-          "status": { "type": "string", "enum": ["is on", "is off"] }
-        }
-      }
-    }
-  }
+	"openapi": "3.0.1",
+	"info": {
+		"title": "OpenAPI definition",
+		"version": "v0"
+	},
+	"servers": [
+		{
+			"url": "http://localhost:8080",
+			"description": "Generated server url"
+		}
+	],
+	"paths": {
+		"/demo": {
+			"get": {
+				"tags": [
+					"demo-controller"
+				],
+				"operationId": "getDemo",
+				"parameters": [
+					{
+						"name": "dto",
+						"in": "query",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/Dto"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/Dto"
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"Dto": {
+				"required": [
+					"name",
+					"str"
+				],
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string",
+						"enum": [
+							"machin",
+							"truc"
+						]
+					},
+					"str": {
+						"type": "string",
+						"enum": [
+							"bidule",
+							"chose"
+						]
+					}
+				}
+			}
+		}
+	}
 }
