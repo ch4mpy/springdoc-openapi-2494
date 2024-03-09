@@ -20,71 +20,71 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @WebMvcTest(controllers = DemoController.class)
 class DemoControllerTest {
 
-    @Autowired
-    MockMvc mockMvc;
+	@Autowired
+	MockMvc mockMvc;
 
-    ObjectMapper om = new ObjectMapper();
+	ObjectMapper om = new ObjectMapper();
 
-    @Test
-    void whenUsingNameUnlessEnumHasCustomConverter_thenOk() throws Exception {
-        mockMvc
-            .perform(
-                get("/demo")
-                    .param("name", EnumSerializedByName.A.name())
-                    .param("str", EnumSerializedByToString.A.name())
-                    .param("bij", BijectiveEnumSerializedByToString.A.toString()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("name", is(EnumSerializedByName.A.name())))
-            .andExpect(jsonPath("str", is(EnumSerializedByToString.A.toString())))
-            .andExpect(jsonPath("bij", is(BijectiveEnumSerializedByToString.A.toString())));
-    }
+	@Test
+	void whenUsingNameUnlessEnumHasCustomConverter_thenOk() throws Exception {
+		mockMvc
+				.perform(
+						get("/demo")
+								.param("nameRequestParam", EnumSerializedByName.A.name())
+								.param("strRequestParam", EnumSerializedByToString.A.name())
+								.param("bijRequestParam", BijectiveEnumSerializedByToString.A.toString()))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("name", is(EnumSerializedByName.A.name())))
+				.andExpect(jsonPath("str", is(EnumSerializedByToString.A.toString())))
+				.andExpect(jsonPath("bij", is(BijectiveEnumSerializedByToString.A.toString())));
+	}
 
-    @Test
-    void whenUsingToStringOutputOnEnumWithDefaultRequestParamConverter_thenKo() throws Exception {
-        mockMvc
-            .perform(
-                get("/demo")
-                    .param("name", EnumSerializedByName.A.toString())
-                    .param("str", EnumSerializedByToString.A.name())
-                    .param("bij", BijectiveEnumSerializedByToString.A.toString()))
-            .andExpect(status().is4xxClientError());
+	@Test
+	void whenUsingToStringOutputOnEnumWithDefaultRequestParamConverter_thenKo() throws Exception {
+		mockMvc
+				.perform(
+						get("/demo")
+								.param("nameRequestParam", EnumSerializedByName.A.toString())
+								.param("strRequestParam", EnumSerializedByToString.A.name())
+								.param("bijRequestParam", BijectiveEnumSerializedByToString.A.toString()))
+				.andExpect(status().is4xxClientError());
 
-        mockMvc
-            .perform(
-                get("/demo")
-                    .param("name", EnumSerializedByName.A.name())
-                    .param("str", EnumSerializedByToString.A.toString())
-                    .param("bij", BijectiveEnumSerializedByToString.A.toString()))
-            .andExpect(status().is4xxClientError());
-    }
+		mockMvc
+				.perform(
+						get("/demo")
+								.param("nameRequestParam", EnumSerializedByName.A.name())
+								.param("strRequestParam", EnumSerializedByToString.A.toString())
+								.param("bijRequestParam", BijectiveEnumSerializedByToString.A.toString()))
+				.andExpect(status().is4xxClientError());
+	}
 
-    @Test
-    void whenUsingNameOnEnumWithCustomConverter_thenKo() throws Exception {
-        mockMvc
-            .perform(
-                get("/demo")
-                    .param("name", EnumSerializedByName.A.name())
-                    .param("str", EnumSerializedByToString.A.name())
-                    .param("bij", BijectiveEnumSerializedByToString.A.name()))
-            .andExpect(status().is4xxClientError());
-    }
+	@Test
+	void whenUsingNameOnEnumWithCustomConverter_thenKo() throws Exception {
+		mockMvc
+				.perform(
+						get("/demo")
+								.param("nameRequestParam", EnumSerializedByName.A.name())
+								.param("strRequestParam", EnumSerializedByToString.A.name())
+								.param("bijRequestParam", BijectiveEnumSerializedByToString.A.name()))
+				.andExpect(status().is4xxClientError());
+	}
 
-    @Test
-    void whenUsingNameUnlessToStringIsJsonValue_thenOk() throws Exception {
-        mockMvc
-            .perform(put("/demo").contentType(MediaType.APPLICATION_JSON_VALUE).content("{\"name\":\"A\",\"str\":\"str a\",\"bij\":\"bij a\"}"))
-            .andExpect(status().isAccepted());
-    }
+	@Test
+	void whenUsingNameUnlessToStringIsJsonValue_thenOk() throws Exception {
+		mockMvc
+				.perform(put("/demo").contentType(MediaType.APPLICATION_JSON_VALUE).content("{\"name\":\"A\",\"str\":\"str a\",\"bij\":\"bij a\"}"))
+				.andExpect(status().isAccepted());
+	}
 
-    @Test
-    void whenUsingNameAndToStringIsJsonValue_thenKo() throws Exception {
-        mockMvc
-            .perform(put("/demo").contentType(MediaType.APPLICATION_JSON_VALUE).content("{\"name\":\"A\",\"str\":\"A\",\"bij\":\"bij a\"}"))
-            .andExpect(status().is4xxClientError());
+	@Test
+	void whenUsingNameAndToStringIsJsonValue_thenKo() throws Exception {
+		mockMvc
+				.perform(put("/demo").contentType(MediaType.APPLICATION_JSON_VALUE).content("{\"name\":\"A\",\"str\":\"A\",\"bij\":\"bij a\"}"))
+				.andExpect(status().is4xxClientError());
 
-        mockMvc
-            .perform(put("/demo").contentType(MediaType.APPLICATION_JSON_VALUE).content("{\"name\":\"A\",\"str\":\"str a\",\"bij\":\"A\"}"))
-            .andExpect(status().is4xxClientError());
-    }
+		mockMvc
+				.perform(put("/demo").contentType(MediaType.APPLICATION_JSON_VALUE).content("{\"name\":\"A\",\"str\":\"str a\",\"bij\":\"A\"}"))
+				.andExpect(status().is4xxClientError());
+	}
 
 }
